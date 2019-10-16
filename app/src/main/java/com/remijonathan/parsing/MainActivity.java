@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/todos/1", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("json","onResponse: "+response);
+                Log.d("json", "onResponse: " + response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -42,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/todos", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                Log.d("json", "onResponse: todo Array" + response);
+                JSONObject jsonObject;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        Log.d("JSON", "onResponse: " + i + " Title: " + jsonObject.getString("title"));
+                        Log.d("JSON", "onResponse: " + i + " Completed? " + jsonObject.getBoolean("completed"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         }, new Response.ErrorListener() {
